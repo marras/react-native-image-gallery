@@ -36,6 +36,7 @@ export default class ViewTransformer extends React.Component {
     onLayout: PropTypes.func,
     onTransformStart: PropTypes.func,
     children: PropTypes.node,
+    onBackgroundPress: PropTypes.func,
   };
 
   static defaultProps = {
@@ -164,6 +165,7 @@ export default class ViewTransformer extends React.Component {
             ],
             backgroundColor: "#F90",
           }}
+          onPress={this.props.onBackgroundPress}
         >
           {this.props.children}
         </View>
