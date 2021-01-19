@@ -155,7 +155,12 @@ export default class ViewTransformer extends React.Component {
         {...gestureResponder}
         ref={"innerViewRef"}
         onLayout={this.onLayout}
+        onPress={() => console.log("EXT")}
       >
+        <TouchableWithoutFeedback
+          onPress={this.props.onBackgroundPress}
+          style={{ flex: 1, backgroundColor: "#5F2" }}
+        />
         <View
           style={{
             flex: 1,
@@ -165,11 +170,8 @@ export default class ViewTransformer extends React.Component {
               { translateY: this.state.translateY },
             ],
           }}
+          onPress={() => console.log("INT")}
         >
-          <TouchableWithoutFeedback
-            onPress={this.props.onBackgroundPress}
-            style={{ flex: 1, backgroundColor: "#5F2" }}
-          />
           {this.props.children}
         </View>
       </View>
