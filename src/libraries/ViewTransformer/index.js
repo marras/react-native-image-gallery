@@ -17,6 +17,7 @@ import {
   alignedRect,
   getTransform,
 } from "./TransformUtils";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 export default class ViewTransformer extends React.Component {
   static Rect = Rect;
@@ -163,10 +164,12 @@ export default class ViewTransformer extends React.Component {
               { translateX: this.state.translateX },
               { translateY: this.state.translateY },
             ],
-            backgroundColor: "#F90",
           }}
-          onPress={this.props.onBackgroundPress}
         >
+          <TouchableWithoutFeedback
+            onPress={this.props.onBackgroundPress}
+            style={{ flex: 1, backgroundColor: "#5F2" }}
+          />
           {this.props.children}
         </View>
       </View>
