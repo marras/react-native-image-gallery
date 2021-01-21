@@ -22,8 +22,7 @@ export default class TransformableImage extends PureComponent {
         onViewTransformed: PropTypes.func,
         imageComponent: PropTypes.func,
         resizeMode: PropTypes.string,
-        errorComponent: PropTypes.func,
-        onBackgroundPress: PropTypes.func
+        errorComponent: PropTypes.func
     };
 
     static defaultProps = {
@@ -171,8 +170,7 @@ export default class TransformableImage extends PureComponent {
             enableScale,
             enableTranslate,
             onTransformGestureReleased,
-            onViewTransformed,
-            onBackgroundPress
+            onViewTransformed
         } = this.props;
 
         let maxScale = 1;
@@ -218,7 +216,6 @@ export default class TransformableImage extends PureComponent {
                 maxScale={maxScale}
                 contentAspectRatio={contentAspectRatio}
                 onLayout={this.onLayout}
-                onBackgroundPress={onBackgroundPress}
                 style={style}
             >
                 {error ? this.renderError() : content}

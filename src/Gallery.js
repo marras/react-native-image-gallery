@@ -163,10 +163,7 @@ export default class Gallery extends PureComponent {
     isClickOnBackground = (gestureState) => {
         const viewTransformer = this.getCurrentImageTransformer();
         if (!viewTransformer) return false;
-
-        if (viewTransformer.isClickOnBackground(gestureState.x0, gestureState.y0)) {
-            this.props.onBackgroundPress();
-        }
+        return viewTransformer.isClickOnBackground(gestureState.x0, gestureState.y0);
     };
 
     shouldScrollViewPager(evt, gestureState) {
@@ -240,13 +237,7 @@ export default class Gallery extends PureComponent {
     }
 
     renderPage(pageData, pageId) {
-        const {
-            onViewTransformed,
-            onTransformGestureReleased,
-            errorComponent,
-            imageComponent,
-            onBackgroundPress
-        } = this.props;
+        const { onViewTransformed, onTransformGestureReleased, errorComponent, imageComponent } = this.props;
         return (
             <TransformableImage
                 onViewTransformed={(transform) => {
@@ -263,7 +254,6 @@ export default class Gallery extends PureComponent {
                 errorComponent={errorComponent}
                 imageComponent={imageComponent}
                 image={pageData}
-                onBackgroundPress={onBackgroundPress}
             />
         );
     }
