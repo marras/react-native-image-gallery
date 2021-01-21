@@ -129,6 +129,7 @@ export default class Gallery extends PureComponent {
       onResponderSingleTapConfirmed: (evt, gestureState) => {
         this.props.onSingleTapConfirmed &&
           this.props.onSingleTapConfirmed(this.currentPage);
+        if (this.isClickOnBackground(gestureState)) this.props.onBackgroundPress()
       },
     });
 
@@ -180,6 +181,15 @@ export default class Gallery extends PureComponent {
 
   componentWillUnmount() {
     this._isMounted = false;
+  }
+
+  isClickOnBackground = (gestureState) => {
+    const viewTransformer = this.getCurrentImageTransformer()
+    if (!viewTransformer) return false;
+
+    if(viewTransformer.isClickOnBackground(gestureState.x0,  gestureState.y0)){
+      this.props.onBackgroundPress()
+    }
   }
 
   shouldScrollViewPager(evt, gestureState) {
