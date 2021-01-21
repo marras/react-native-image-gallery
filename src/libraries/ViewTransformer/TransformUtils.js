@@ -3,7 +3,7 @@ import Rect from './Rect';
 export { Rect };
 
 export class Transform {
-    constructor (scale, translateX, translateY, pivot) {
+    constructor(scale, translateX, translateY, pivot) {
         this.scale = scale;
         this.translateX = translateX;
         this.translateY = translateY;
@@ -11,7 +11,7 @@ export class Transform {
     }
 }
 
-function isValidNumber (number) {
+function isValidNumber(number) {
     if (typeof number === 'number') {
         if (!isNaN(number)) {
             return true;
@@ -20,21 +20,26 @@ function isValidNumber (number) {
     return false;
 }
 
-function isValidRect (rect) {
+function isValidRect(rect) {
     if (rect instanceof Rect && rect.isValid()) {
         return true;
     }
     return false;
 }
 
-function isValidTransform (transform) {
-    if (transform && isValidNumber(transform.scale) && isValidNumber(transform.translateX) && isValidNumber(transform.translateY)) {
+function isValidTransform(transform) {
+    if (
+        transform &&
+        isValidNumber(transform.scale) &&
+        isValidNumber(transform.translateX) &&
+        isValidNumber(transform.translateY)
+    ) {
         return true;
     }
     return false;
 }
 
-export function fitCenterRect (contentAspectRatio, containerRect) {
+export function fitCenterRect(contentAspectRatio, containerRect) {
     let w = containerRect.width();
     let h = containerRect.height();
     let viewAspectRatio = w / h;
@@ -46,11 +51,11 @@ export function fitCenterRect (contentAspectRatio, containerRect) {
     }
 
     return new Rect(
-    containerRect.centerX() - w / 2,
-    containerRect.centerY() - h / 2,
-    containerRect.centerX() + w / 2,
-    containerRect.centerY() + h / 2
-  );
+        containerRect.centerX() - w / 2,
+        containerRect.centerY() - h / 2,
+        containerRect.centerX() + w / 2,
+        containerRect.centerY() + h / 2
+    );
 }
 
 /**
@@ -60,7 +65,7 @@ export function fitCenterRect (contentAspectRatio, containerRect) {
  * @param transform
  * @returns {*}
  */
-export function transformedRect (rect, transform) {
+export function transformedRect(rect, transform) {
     if (!isValidRect(rect)) {
         throw new Error('transformedRect...invalid rect');
     }
@@ -79,12 +84,7 @@ export function transformedRect (rect, transform) {
         let centerX = rect.centerX() + translateX * scale;
         let centerY = rect.centerY() + translateY * scale;
 
-        return new Rect(
-      centerX - width / 2,
-      centerY - height / 2,
-      centerX + width / 2,
-      centerY + height / 2
-    );
+        return new Rect(centerX - width / 2, centerY - height / 2, centerX + width / 2, centerY + height / 2);
     } else {
         let pivotX = pivot.x;
         let pivotY = pivot.y;
@@ -92,12 +92,14 @@ export function transformedRect (rect, transform) {
             throw new Error('transformedRect...invalid pivot x=' + pivot.x + ', y=' + pivot.y);
         }
 
-    // first make the center still
+        // first make the center still
         let resultRect = transformedRect(rect, {
-            scale, translateX, translateY
+            scale,
+            translateX,
+            translateY
         });
 
-    // the pivot moved during scaling, now move it back
+        // the pivot moved during scaling, now move it back
         let dx = (scale - 1) * (pivotX - resultRect.centerX());
         let dy = (scale - 1) * (pivotY - resultRect.centerY());
         return resultRect.offset(-dx, -dy);
@@ -110,7 +112,7 @@ export function transformedRect (rect, transform) {
  * @param toRect
  * @returns {Transform}
  */
-export function getTransform (fromRect, toRect) {
+export function getTransform(fromRect, toRect) {
     let scale = toRect.width() / fromRect.width();
     let translateX = (toRect.centerX() - fromRect.centerX()) / scale;
     let translateY = (toRect.centerY() - fromRect.centerY()) / scale;
@@ -124,7 +126,7 @@ export function getTransform (fromRect, toRect) {
  * @param viewPortRect
  * @returns {*|{line, column}|{column, line}|{x}}
  */
-export function alignedRect (rect, viewPortRect) {
+export function alignedRect(rect, viewPortRect) {
     let dx = 0;
     let dy = 0;
 
@@ -151,7 +153,7 @@ export function alignedRect (rect, viewPortRect) {
     return rect.copy().offset(dx, dy);
 }
 
-export function availableTranslateSpace (rect, viewPortRect) {
+export function availableTranslateSpace(rect, viewPortRect) {
     return {
         left: viewPortRect.left - rect.left,
         right: rect.right - viewPortRect.right,
