@@ -1,35 +1,35 @@
 export default class Rect {
-    constructor (left, top, right, bottom) {
+    constructor(left, top, right, bottom) {
         this.left = left;
         this.top = top;
         this.right = right;
         this.bottom = bottom;
     }
 
-    set (left, top, right, bottom) {
+    set(left, top, right, bottom) {
         this.left = left;
         this.top = top;
         this.right = right;
         this.bottom = bottom;
     }
 
-    width () {
+    width() {
         return this.right - this.left;
     }
 
-    height () {
+    height() {
         return this.bottom - this.top;
     }
 
-    centerX () {
+    centerX() {
         return (this.left + this.right) / 2;
     }
 
-    centerY () {
+    centerY() {
         return (this.top + this.bottom) / 2;
     }
 
-    offset (dx, dy) {
+    offset(dx, dy) {
         this.left += dx;
         this.right += dx;
         this.top += dy;
@@ -37,11 +37,11 @@ export default class Rect {
         return this;
     }
 
-    copy () {
+    copy() {
         return new Rect(this.left, this.top, this.right, this.bottom);
     }
 
-    equals (rect, epsilon) {
+    equals(rect, epsilon) {
         if (!epsilon) {
             return (
                 this.left === rect.left &&
@@ -59,11 +59,13 @@ export default class Rect {
         }
     }
 
-    isValid () {
-        if (typeof this.left === 'number' &&
+    isValid() {
+        if (
+            typeof this.left === 'number' &&
             typeof this.right === 'number' &&
             typeof this.top === 'number' &&
-            typeof this.bottom === 'number') {
+            typeof this.bottom === 'number'
+        ) {
             return true;
         }
         return false;
