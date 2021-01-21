@@ -3,7 +3,15 @@ import ReactNative, { View, Animated, Easing, NativeModules } from 'react-native
 import Scroller from '../Scroller';
 import PropTypes from 'prop-types';
 import { createResponder } from '../GestureResponder';
-import { Rect, Transform, transformedRect, availableTranslateSpace, fitCenterRect, alignedRect, getTransform } from './TransformUtils';
+import {
+    Rect,
+    Transform,
+    transformedRect,
+    availableTranslateSpace,
+    fitCenterRect,
+    alignedRect,
+    getTransform,
+} from './TransformUtils';
 
 export default class ViewTransformer extends React.Component {
     static Rect = Rect;
@@ -22,7 +30,7 @@ export default class ViewTransformer extends React.Component {
         onSingleTapConfirmed: PropTypes.func,
         onLayout: PropTypes.func,
         onTransformStart: PropTypes.func,
-        children: PropTypes.node
+        children: PropTypes.node,
     };
 
     static defaultProps = {
@@ -31,10 +39,10 @@ export default class ViewTransformer extends React.Component {
         enableTranslate: true,
         enableTransform: true,
         maxScale: 1,
-        enableResistance: false
+        enableResistance: false,
     };
 
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
             // transform state
@@ -47,7 +55,7 @@ export default class ViewTransformer extends React.Component {
             width: 0,
             height: 0,
             pageX: 0,
-            pageY: 0
+            pageY: 0,
         };
         this._viewPortRect = new Rect(); // A holder to avoid new too much
 
@@ -65,17 +73,17 @@ export default class ViewTransformer extends React.Component {
 
             this.updateTransform({
                 translateX: this.state.translateX + dx / this.state.scale,
-                translateY: this.state.translateY + dy / this.state.scale
+                translateY: this.state.translateY + dy / this.state.scale,
             });
         });
     }
 
-    viewPortRect () {
+    viewPortRect() {
         this._viewPortRect.set(0, 0, this.state.width, this.state.height);
         return this._viewPortRect;
     }
 
-    contentRect () {
+    contentRect() {
         let rect = this.viewPortRect().copy();
         if (this.props.contentAspectRatio && this.props.contentAspectRatio > 0) {
             rect = fitCenterRect(this.props.contentAspectRatio, rect);
@@ -83,7 +91,7 @@ export default class ViewTransformer extends React.Component {
         return rect;
     }
 
-    transformedContentRect () {
+    transformedContentRect() {
         let rect = transformedRect(this.viewPortRect(), this.currentTransform());
         if (this.props.contentAspectRatio && this.props.contentAspectRatio > 0) {
             rect = fitCenterRect(this.props.contentAspectRatio, rect);
@@ -91,11 +99,11 @@ export default class ViewTransformer extends React.Component {
         return rect;
     }
 
-    currentTransform () {
+    currentTransform() {
         return new Transform(this.state.scale, this.state.translateX, this.state.translateY);
     }
 
-    UNSAFE_componentWillMount () {
+    UNSAFE_componentWillMount() {
         this.gestureResponder = createResponder({
             onStartShouldSetResponder: (evt, gestureState) => true,
             onMoveShouldSetResponderCapture: (evt, gestureState) => true,
@@ -107,63 +115,62 @@ export default class ViewTransformer extends React.Component {
             onResponderTerminationRequest: (evt, gestureState) => false, // Do not allow parent view to intercept gesture
             onResponderSingleTapConfirmed: (evt, gestureState) => {
                 this.props.onSingleTapConfirmed && this.props.onSingleTapConfirmed();
-            }
+            },
         });
     }
 
-    componentDidUpdate (prevProps, prevState) {
-        this.props.onViewTransformed && this.props.onViewTransformed({
-            scale: this.state.scale,
-            translateX: this.state.translateX,
-            translateY: this.state.translateY
-        });
+    componentDidUpdate(prevProps, prevState) {
+        this.props.onViewTransformed &&
+            this.props.onViewTransformed({
+                scale: this.state.scale,
+                translateX: this.state.translateX,
+                translateY: this.state.translateY,
+            });
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         this.cancelAnimation();
     }
 
-    render () {
+    render() {
         let gestureResponder = this.gestureResponder;
         if (!this.props.enableTransform) {
             gestureResponder = {};
         }
 
         return (
-            <View
-              {...this.props}
-              {...gestureResponder}
-              ref={'innerViewRef'}
-              onLayout={this.onLayout}>
-                 <View
-                   style={{
-                       flex: 1,
-                       transform: [
-                          { scale: this.state.scale },
-                          { translateX: this.state.translateX },
-                          { translateY: this.state.translateY }
-                       ]
-                   }}>
-                    { this.props.children }
+            <View {...this.props} {...gestureResponder} ref={'innerViewRef'} onLayout={this.onLayout}>
+                <View
+                    style={{
+                        flex: 1,
+                        transform: [
+                            { scale: this.state.scale },
+                            { translateX: this.state.translateX },
+                            { translateY: this.state.translateY },
+                        ],
+                    }}
+                >
+                    {this.props.children}
                 </View>
             </View>
         );
     }
 
-    onLayout (e) {
-        const {width, height} = e.nativeEvent.layout;
+    onLayout(e) {
+        const { width, height } = e.nativeEvent.layout;
         if (width !== this.state.width || height !== this.state.height) {
-            this.setState({width, height});
+            this.setState({ width, height });
         }
         this.measureLayout();
 
         this.props.onLayout && this.props.onLayout(e);
     }
 
-    measureLayout () {
+    measureLayout() {
         let handle = ReactNative.findNodeHandle(this.refs['innerViewRef']);
         NativeModules.UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
-            if (typeof pageX === 'number' && typeof pageY === 'number') { // avoid undefined values on Android devices
+            if (typeof pageX === 'number' && typeof pageY === 'number') {
+                // avoid undefined values on Android devices
                 if (this.state.pageX !== pageX || this.state.pageY !== pageY) {
                     this.setState({ pageX: pageX, pageY: pageY });
                 }
@@ -171,13 +178,13 @@ export default class ViewTransformer extends React.Component {
         });
     }
 
-    onResponderGrant (evt, gestureState) {
+    onResponderGrant(evt, gestureState) {
         this.props.onTransformStart && this.props.onTransformStart();
-        this.setState({responderGranted: true});
+        this.setState({ responderGranted: true });
         this.measureLayout();
     }
 
-    onResponderMove (evt, gestureState) {
+    onResponderMove(evt, gestureState) {
         this.cancelAnimation();
 
         let dx = gestureState.moveX - gestureState.previousMoveX;
@@ -199,10 +206,7 @@ export default class ViewTransformer extends React.Component {
             let pivotY = gestureState.moveY - this.state.pageY;
 
             let rect = transformedRect(
-                transformedRect(
-                    this.contentRect(),
-                    this.currentTransform()
-                ),
+                transformedRect(this.contentRect(), this.currentTransform()),
                 new Transform(scaleBy, dx, dy, { x: pivotX, y: pivotY })
             );
             transform = getTransform(this.contentRect(), rect);
@@ -220,12 +224,14 @@ export default class ViewTransformer extends React.Component {
         return true;
     }
 
-    onResponderRelease (evt, gestureState) {
-        let handled = this.props.onTransformGestureReleased && this.props.onTransformGestureReleased({
-            scale: this.state.scale,
-            translateX: this.state.translateX,
-            translateY: this.state.translateY
-        });
+    onResponderRelease(evt, gestureState) {
+        let handled =
+            this.props.onTransformGestureReleased &&
+            this.props.onTransformGestureReleased({
+                scale: this.state.scale,
+                translateX: this.state.translateX,
+                translateY: this.state.translateY,
+            });
         if (handled) {
             return;
         }
@@ -255,7 +261,7 @@ export default class ViewTransformer extends React.Component {
         }
     }
 
-    performFling (vx, vy) {
+    performFling(vx, vy) {
         let startX = 0;
         let startY = 0;
         let maxX, minX, maxY, minY;
@@ -302,7 +308,7 @@ export default class ViewTransformer extends React.Component {
         this.scroller.fling(startX, startY, vx, vy, minX, maxX, minY, maxY);
     }
 
-    performDoubleTapUp (pivotX, pivotY) {
+    performDoubleTapUp(pivotX, pivotY) {
         let curScale = this.state.scale;
         let scaleBy;
         if (curScale > (1 + this.props.maxScale) / 2) {
@@ -317,35 +323,29 @@ export default class ViewTransformer extends React.Component {
         );
         rect = transformedRect(
             rect,
-            new Transform(
-                1,
-                this.viewPortRect().centerX() - pivotX,
-                this.viewPortRect().centerY() - pivotY
-            )
+            new Transform(1, this.viewPortRect().centerX() - pivotX, this.viewPortRect().centerY() - pivotY)
         );
         rect = alignedRect(rect, this.viewPortRect());
         this.animate(rect);
     }
 
-    applyResistance (dx, dy) {
+    applyResistance(dx, dy) {
         let availablePanDistance = availableTranslateSpace(this.transformedContentRect(), this.viewPortRect());
 
-        if ((dx > 0 && availablePanDistance.left < 0) ||
-        (dx < 0 && availablePanDistance.right < 0)) {
+        if ((dx > 0 && availablePanDistance.left < 0) || (dx < 0 && availablePanDistance.right < 0)) {
             dx /= 3;
         }
-        if ((dy > 0 && availablePanDistance.top < 0) ||
-        (dy < 0 && availablePanDistance.bottom < 0)) {
+        if ((dy > 0 && availablePanDistance.top < 0) || (dy < 0 && availablePanDistance.bottom < 0)) {
             dy /= 3;
         }
         return { dx, dy };
     }
 
-    cancelAnimation () {
+    cancelAnimation() {
         this.state.animator.stopAnimation();
     }
 
-    animate (targetRect, durationInMillis) {
+    animate(targetRect, durationInMillis) {
         let duration = 200;
         if (durationInMillis) {
             duration = durationInMillis;
@@ -370,18 +370,15 @@ export default class ViewTransformer extends React.Component {
             this.updateTransform(transform);
         });
 
-        Animated.timing(
-            this.state.animator,
-            {
-                toValue: 1,
-                duration: duration,
-                easing: Easing.inOut(Easing.ease),
-                useNativeDriver: true
-            }
-        ).start();
+        Animated.timing(this.state.animator, {
+            toValue: 1,
+            duration: duration,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+        }).start();
     }
 
-    animateBounce () {
+    animateBounce() {
         let curScale = this.state.scale;
         let minScale = 1;
         let maxScale = this.props.maxScale;
@@ -394,29 +391,24 @@ export default class ViewTransformer extends React.Component {
 
         let rect = transformedRect(
             this.transformedContentRect(),
-            new Transform(
-                scaleBy,
-                0,
-                0,
-                {
-                    x: this.viewPortRect().centerX(),
-                    y: this.viewPortRect().centerY()
-                }
-            )
+            new Transform(scaleBy, 0, 0, {
+                x: this.viewPortRect().centerX(),
+                y: this.viewPortRect().centerY(),
+            })
         );
         rect = alignedRect(rect, this.viewPortRect());
         this.animate(rect);
     }
 
-    updateTransform (transform) {
+    updateTransform(transform) {
         this.setState(transform);
     }
 
-    forceUpdateTransform (transform) {
+    forceUpdateTransform(transform) {
         this.setState(transform);
     }
 
-    getAvailableTranslateSpace () {
+    getAvailableTranslateSpace() {
         return availableTranslateSpace(this.transformedContentRect(), this.viewPortRect());
     }
 }
