@@ -30,8 +30,7 @@ export default class ViewTransformer extends React.Component {
         onSingleTapConfirmed: PropTypes.func,
         onLayout: PropTypes.func,
         onTransformStart: PropTypes.func,
-        children: PropTypes.node,
-        onBackgroundPress: PropTypes.func
+        children: PropTypes.node
     };
 
     static defaultProps = {
@@ -140,13 +139,7 @@ export default class ViewTransformer extends React.Component {
         }
 
         return (
-            <View
-                {...this.props}
-                {...gestureResponder}
-                ref={'innerViewRef'}
-                onLayout={this.onLayout}
-                onPress={() => console.log('EXT')}
-            >
+            <View {...this.props} {...gestureResponder} ref={'innerViewRef'} onLayout={this.onLayout}>
                 <View
                     style={{
                         flex: 1,

@@ -162,8 +162,7 @@ export default class Gallery extends PureComponent {
 
     isClickOnBackground = (gestureState) => {
         const viewTransformer = this.getCurrentImageTransformer();
-        if (!viewTransformer) return false;
-        return viewTransformer.isClickOnBackground(gestureState.x0, gestureState.y0);
+        return viewTransformer && viewTransformer.isClickOnBackground(gestureState.x0, gestureState.y0);
     };
 
     shouldScrollViewPager(evt, gestureState) {
