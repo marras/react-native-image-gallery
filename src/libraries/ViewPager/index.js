@@ -24,7 +24,7 @@ export default class ViewPager extends PureComponent {
         onPageSelected: PropTypes.func,
         onPageScrollStateChanged: PropTypes.func,
         onPageScroll: PropTypes.func,
-        flatListProps: PropTypes.object,
+        flatListProps: PropTypes.object
     };
 
     static defaultProps = {
@@ -34,7 +34,7 @@ export default class ViewPager extends PureComponent {
         pageDataArray: [],
         initialListSize: 10,
         removeClippedSubviews: true,
-        flatListProps: {},
+        flatListProps: {}
     };
 
     currentPage = undefined; // Do not initialize to make onPageSelected(0) be dispatched
@@ -68,7 +68,7 @@ export default class ViewPager extends PureComponent {
                 this.refs['innerFlatList'] &&
                     this.refs['innerFlatList'].scrollToOffset({
                         offset: curX,
-                        animated: false,
+                        animated: false
                     });
 
                 let position = Math.floor(curX / (this.state.width + this.props.pageMargin));
@@ -82,7 +82,7 @@ export default class ViewPager extends PureComponent {
                     this.props.onPageScroll({
                         position,
                         offset,
-                        fraction,
+                        fraction
                     });
             }
         });
@@ -94,7 +94,7 @@ export default class ViewPager extends PureComponent {
             onResponderGrant: this.onResponderGrant,
             onResponderMove: this.onResponderMove,
             onResponderRelease: this.onResponderRelease,
-            onResponderTerminate: this.onResponderRelease,
+            onResponderTerminate: this.onResponderRelease
         });
     }
 
@@ -228,7 +228,7 @@ export default class ViewPager extends PureComponent {
                 this.refs['innerFlatList'] &&
                     this.refs['innerFlatList'].scrollToOffset({
                         offset: finalX,
-                        animated: false,
+                        animated: false
                     });
                 this.refs['innerFlatList'] && this.refs['innerFlatList'].recordInteraction();
             });
@@ -262,7 +262,7 @@ export default class ViewPager extends PureComponent {
         return {
             length: this.state.width + this.props.pageMargin,
             offset: (this.state.width + this.props.pageMargin) * index,
-            index,
+            index
         };
     }
 
@@ -277,7 +277,7 @@ export default class ViewPager extends PureComponent {
         const layout = {
             width,
             height,
-            position: 'relative',
+            position: 'relative'
         };
         const style = page.props.style ? [page.props.style, layout] : layout;
 
@@ -292,7 +292,7 @@ export default class ViewPager extends PureComponent {
                     style={{
                         width: width + this.props.pageMargin,
                         height: height,
-                        alignItems: 'flex-end',
+                        alignItems: 'flex-end'
                     }}
                 >
                     {element}
@@ -336,7 +336,7 @@ export default class ViewPager extends PureComponent {
                     // https://github.com/facebook/react-native/issues/14945#issuecomment-354651271
                     contentOffset={{
                         x: this.getScrollOffsetOfPage(parseInt(this.props.initialPage)),
-                        y: 0,
+                        y: 0
                     }}
                     {...this.props.flatListProps}
                 />

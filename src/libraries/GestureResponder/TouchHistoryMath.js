@@ -124,7 +124,7 @@ var TouchHistoryMath = {
         );
     },
 
-    noCentroid: -1,
+    noCentroid: -1
 };
 
 module.exports = TouchHistoryMath;

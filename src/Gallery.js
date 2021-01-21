@@ -6,7 +6,7 @@ import TransformableImage from './libraries/TransformableImage';
 import ViewPager from './libraries/ViewPager';
 
 const DEFAULT_FLAT_LIST_PROPS = {
-    windowSize: 3,
+    windowSize: 3
 };
 
 export default class Gallery extends PureComponent {
@@ -25,14 +25,14 @@ export default class Gallery extends PureComponent {
         removeClippedSubviews: PropTypes.bool,
         imageComponent: PropTypes.func,
         errorComponent: PropTypes.func,
-        flatListProps: PropTypes.object,
+        flatListProps: PropTypes.object
     };
 
     static defaultProps = {
         removeClippedSubviews: true,
         imageComponent: undefined,
         scrollViewStyle: {},
-        flatListProps: DEFAULT_FLAT_LIST_PROPS,
+        flatListProps: DEFAULT_FLAT_LIST_PROPS
     };
 
     imageRefs = new Map();
@@ -112,7 +112,7 @@ export default class Gallery extends PureComponent {
             onResponderTerminationRequest: (evt, gestureState) => false, // Do not allow parent view to intercept gesture
             onResponderSingleTapConfirmed: (evt, gestureState) => {
                 this.props.onSingleTapConfirmed && this.props.onSingleTapConfirmed(this.currentPage);
-            },
+            }
         });
 
         this.viewPagerResponder = {
@@ -124,7 +124,7 @@ export default class Gallery extends PureComponent {
             },
             onEnd: (evt, gestureState, disableSettle) => {
                 this.getViewPagerInstance().onResponderRelease(evt, gestureState, disableSettle);
-            },
+            }
         };
 
         this.imageResponder = {
@@ -146,7 +146,7 @@ export default class Gallery extends PureComponent {
                 const currentImageTransformer = this.getCurrentImageTransformer();
                 currentImageTransformer && currentImageTransformer.onResponderRelease(evt, gestureState);
                 clearTimeout(this._longPressTimeout);
-            },
+            }
         };
     }
 
@@ -256,7 +256,7 @@ export default class Gallery extends PureComponent {
             transformer.forceUpdateTransform({
                 scale: 1,
                 translateX: 0,
-                translateY: 0,
+                translateY: 0
             });
         }
 
@@ -265,7 +265,7 @@ export default class Gallery extends PureComponent {
             transformer.forceUpdateTransform({
                 scale: 1,
                 translateX: 0,
-                translateY: 0,
+                translateY: 0
             });
         }
     }
@@ -285,7 +285,7 @@ export default class Gallery extends PureComponent {
 
         const flatListProps = {
             ...DEFAULT_FLAT_LIST_PROPS,
-            ...this.props.flatListProps,
+            ...this.props.flatListProps
         };
 
         return (

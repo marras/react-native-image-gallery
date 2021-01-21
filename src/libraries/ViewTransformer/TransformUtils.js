@@ -96,7 +96,7 @@ export function transformedRect(rect, transform) {
         let resultRect = transformedRect(rect, {
             scale,
             translateX,
-            translateY,
+            translateY
         });
 
         // the pivot moved during scaling, now move it back
@@ -158,6 +158,6 @@ export function availableTranslateSpace(rect, viewPortRect) {
         left: viewPortRect.left - rect.left,
         right: rect.right - viewPortRect.right,
         top: viewPortRect.top - rect.top,
-        bottom: rect.bottom - viewPortRect.bottom,
+        bottom: rect.bottom - viewPortRect.bottom
     };
 }

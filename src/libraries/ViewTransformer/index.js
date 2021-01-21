@@ -10,7 +10,7 @@ import {
     availableTranslateSpace,
     fitCenterRect,
     alignedRect,
-    getTransform,
+    getTransform
 } from './TransformUtils';
 
 export default class ViewTransformer extends React.Component {
@@ -30,7 +30,7 @@ export default class ViewTransformer extends React.Component {
         onSingleTapConfirmed: PropTypes.func,
         onLayout: PropTypes.func,
         onTransformStart: PropTypes.func,
-        children: PropTypes.node,
+        children: PropTypes.node
     };
 
     static defaultProps = {
@@ -39,7 +39,7 @@ export default class ViewTransformer extends React.Component {
         enableTranslate: true,
         enableTransform: true,
         maxScale: 1,
-        enableResistance: false,
+        enableResistance: false
     };
 
     constructor(props) {
@@ -55,7 +55,7 @@ export default class ViewTransformer extends React.Component {
             width: 0,
             height: 0,
             pageX: 0,
-            pageY: 0,
+            pageY: 0
         };
         this._viewPortRect = new Rect(); // A holder to avoid new too much
 
@@ -73,7 +73,7 @@ export default class ViewTransformer extends React.Component {
 
             this.updateTransform({
                 translateX: this.state.translateX + dx / this.state.scale,
-                translateY: this.state.translateY + dy / this.state.scale,
+                translateY: this.state.translateY + dy / this.state.scale
             });
         });
     }
@@ -115,7 +115,7 @@ export default class ViewTransformer extends React.Component {
             onResponderTerminationRequest: (evt, gestureState) => false, // Do not allow parent view to intercept gesture
             onResponderSingleTapConfirmed: (evt, gestureState) => {
                 this.props.onSingleTapConfirmed && this.props.onSingleTapConfirmed();
-            },
+            }
         });
     }
 
@@ -124,7 +124,7 @@ export default class ViewTransformer extends React.Component {
             this.props.onViewTransformed({
                 scale: this.state.scale,
                 translateX: this.state.translateX,
-                translateY: this.state.translateY,
+                translateY: this.state.translateY
             });
     }
 
@@ -146,8 +146,8 @@ export default class ViewTransformer extends React.Component {
                         transform: [
                             { scale: this.state.scale },
                             { translateX: this.state.translateX },
-                            { translateY: this.state.translateY },
-                        ],
+                            { translateY: this.state.translateY }
+                        ]
                     }}
                 >
                     {this.props.children}
@@ -230,7 +230,7 @@ export default class ViewTransformer extends React.Component {
             this.props.onTransformGestureReleased({
                 scale: this.state.scale,
                 translateX: this.state.translateX,
-                translateY: this.state.translateY,
+                translateY: this.state.translateY
             });
         if (handled) {
             return;
@@ -374,7 +374,7 @@ export default class ViewTransformer extends React.Component {
             toValue: 1,
             duration: duration,
             easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
+            useNativeDriver: true
         }).start();
     }
 
@@ -393,7 +393,7 @@ export default class ViewTransformer extends React.Component {
             this.transformedContentRect(),
             new Transform(scaleBy, 0, 0, {
                 x: this.viewPortRect().centerX(),
-                y: this.viewPortRect().centerY(),
+                y: this.viewPortRect().centerY()
             })
         );
         rect = alignedRect(rect, this.viewPortRect());

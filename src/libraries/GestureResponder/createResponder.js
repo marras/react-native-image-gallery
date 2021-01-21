@@ -119,11 +119,11 @@ export default function create(config) {
     }
 
     const interactionState = {
-        handle: null,
+        handle: null
     };
     const gestureState = {
         // Useful for debugging
-        stateID: Math.random(),
+        stateID: Math.random()
     };
     initializeGestureState(gestureState);
 
@@ -284,7 +284,7 @@ export default function create(config) {
         onResponderTerminationRequest: function (e) {
             DEV && console.log('onResponderTerminationRequest...');
             return config.onResponderTerminationRequest ? config.onResponderTerminationRequest(e.gestureState) : true;
-        },
+        }
     };
     return { ...handlers };
 }

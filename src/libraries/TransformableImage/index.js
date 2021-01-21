@@ -9,8 +9,8 @@ export default class TransformableImage extends PureComponent {
             source: PropTypes.oneOfType([PropTypes.object, PropTypes.number]).isRequired,
             dimensions: PropTypes.shape({
                 width: PropTypes.number,
-                height: PropTypes.number,
-            }),
+                height: PropTypes.number
+            })
         }).isRequired,
         style: ViewPropTypes ? ViewPropTypes.style : View.propTypes.style,
         onLoad: PropTypes.func,
@@ -22,7 +22,7 @@ export default class TransformableImage extends PureComponent {
         onViewTransformed: PropTypes.func,
         imageComponent: PropTypes.func,
         resizeMode: PropTypes.string,
-        errorComponent: PropTypes.func,
+        errorComponent: PropTypes.func
     };
 
     static defaultProps = {
@@ -30,7 +30,7 @@ export default class TransformableImage extends PureComponent {
         enableScale: true,
         enableTranslate: true,
         imageComponent: undefined,
-        resizeMode: 'contain',
+        resizeMode: 'contain'
     };
 
     constructor(props) {
@@ -47,7 +47,7 @@ export default class TransformableImage extends PureComponent {
             viewHeight: 0,
             imageLoaded: false,
             imageDimensions: props.image.dimensions,
-            keyAcumulator: 1,
+            keyAcumulator: 1
         };
     }
 
@@ -66,7 +66,7 @@ export default class TransformableImage extends PureComponent {
             // image source changed, clear last image's imageDimensions info if any
             this.setState({
                 imageDimensions: nextProps.image.dimensions,
-                keyAcumulator: this.state.keyAcumulator + 1,
+                keyAcumulator: this.state.keyAcumulator + 1
             });
             if (!nextProps.image.dimensions) {
                 // if we don't have image dimensions provided in source
@@ -125,7 +125,7 @@ export default class TransformableImage extends PureComponent {
                         } else {
                             this._mounted &&
                                 this.setState({
-                                    imageDimensions: { width, height },
+                                    imageDimensions: { width, height }
                                 });
                         }
                     }
@@ -151,14 +151,14 @@ export default class TransformableImage extends PureComponent {
                         flex: 1,
                         backgroundColor: 'black',
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: 'center'
                     }}
                 >
                     <Text
                         style={{
                             color: 'white',
                             fontSize: 15,
-                            fontStyle: 'italic',
+                            fontStyle: 'italic'
                         }}
                     >
                         This image cannot be displayed...
@@ -179,7 +179,7 @@ export default class TransformableImage extends PureComponent {
             enableScale,
             enableTranslate,
             onTransformGestureReleased,
-            onViewTransformed,
+            onViewTransformed
         } = this.props;
 
         let maxScale = 1;
@@ -207,7 +207,7 @@ export default class TransformableImage extends PureComponent {
             resizeMode: resizeMode,
             onLoadStart: this.onLoadStart,
             onLoad: this.onLoad,
-            capInsets: { left: 0.1, top: 0.1, right: 0.1, bottom: 0.1 },
+            capInsets: { left: 0.1, top: 0.1, right: 0.1, bottom: 0.1 }
         };
 
         const content = imageComponent ? imageComponent(imageProps, imageDimensions) : <Image {...imageProps} />;

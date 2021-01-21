@@ -23,7 +23,7 @@ const ViscousFluidInterpolator = {
             return interpolated + VISCOUS_FLUID_OFFSET;
         }
         return interpolated;
-    },
+    }
 };
 
 export default ViscousFluidInterpolator;
