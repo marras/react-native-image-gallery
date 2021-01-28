@@ -123,10 +123,7 @@ export default class TransformableImage extends PureComponent {
                         ) {
                             // no need to update state
                         } else {
-                            this._mounted &&
-                                this.setState({
-                                    imageDimensions: { width, height }
-                                });
+                            this._mounted && this.setState({ imageDimensions: { width, height } });
                         }
                     }
                 },
@@ -154,13 +151,7 @@ export default class TransformableImage extends PureComponent {
                         justifyContent: 'center'
                     }}
                 >
-                    <Text
-                        style={{
-                            color: 'white',
-                            fontSize: 15,
-                            fontStyle: 'italic'
-                        }}
-                    >
+                    <Text style={{ color: 'white', fontSize: 15, fontStyle: 'italic' }}>
                         This image cannot be displayed...
                     </Text>
                 </View>

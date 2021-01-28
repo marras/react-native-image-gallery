@@ -25,7 +25,8 @@ export default class Gallery extends PureComponent {
         removeClippedSubviews: PropTypes.bool,
         imageComponent: PropTypes.func,
         errorComponent: PropTypes.func,
-        flatListProps: PropTypes.object
+        flatListProps: PropTypes.object,
+        onBackgroundPress: PropTypes.func
     };
 
     static defaultProps = {
@@ -112,6 +113,7 @@ export default class Gallery extends PureComponent {
             onResponderTerminationRequest: (evt, gestureState) => false, // Do not allow parent view to intercept gesture
             onResponderSingleTapConfirmed: (evt, gestureState) => {
                 this.props.onSingleTapConfirmed && this.props.onSingleTapConfirmed(this.currentPage);
+                if (this.isClickOnBackground(gestureState)) this.props.onBackgroundPress();
             }
         });
 
@@ -157,6 +159,11 @@ export default class Gallery extends PureComponent {
     componentWillUnmount() {
         this._isMounted = false;
     }
+
+    isClickOnBackground = (gestureState) => {
+        const viewTransformer = this.getCurrentImageTransformer();
+        return viewTransformer && viewTransformer.isClickOnBackground(gestureState.x0, gestureState.y0);
+    };
 
     shouldScrollViewPager(evt, gestureState) {
         if (gestureState.numberActiveTouches > 1) {

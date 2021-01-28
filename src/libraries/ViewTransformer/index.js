@@ -411,4 +411,9 @@ export default class ViewTransformer extends React.Component {
     getAvailableTranslateSpace() {
         return availableTranslateSpace(this.transformedContentRect(), this.viewPortRect());
     }
+
+    isClickOnBackground = (x, y) => {
+        const { left, right, top, bottom } = this.transformedContentRect();
+        return x < left || x > right || y < top || y > bottom;
+    };
 }
